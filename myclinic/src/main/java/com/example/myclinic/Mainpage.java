@@ -8,7 +8,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Mainpage extends AppCompatActivity {
-
     private Button appointments, doctors;
 
     @Override
@@ -16,8 +15,8 @@ public class Mainpage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainpage);
 
-        appointments=(Button)findViewById(R.id.b_appoint);
-        doctors=(Button)findViewById(R.id.b_doctors);
+        appointments = findViewById(R.id.b_appoint);
+        doctors = findViewById(R.id.b_doctors);
 
         appointments.setOnClickListener(new View.OnClickListener() {
             @Override
