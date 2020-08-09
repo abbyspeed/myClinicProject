@@ -15,7 +15,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class PasswordActivity extends AppCompatActivity {
-
     private EditText passwordemail;
     private Button passwordReset;
     private FirebaseAuth firebaseAuth;

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myclinic.ui.home.HomeFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -55,8 +56,8 @@ public class Login extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         if (user != null) {
-//            finish();
-            startActivity(new Intent(Login.this, Mainpage.class));
+            finish();
+            startActivity(new Intent(Login.this, Central.class));
         }
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +93,7 @@ public class Login extends AppCompatActivity {
                     progressDialog.dismiss();
                     checkEmailVerification();
                     Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Login.this, Mainpage.class));
+                    startActivity(new Intent(Login.this, Central.class));
 
                 } else {
                     Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();

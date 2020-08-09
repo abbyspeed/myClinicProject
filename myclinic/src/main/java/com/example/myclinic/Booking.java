@@ -3,9 +3,13 @@ package com.example.myclinic;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.CalendarContract;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,7 +21,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,7 +37,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Booking extends AppCompatActivity {
+public class Booking extends Fragment {
     Button proceed;
     RadioGroup gender;
 
@@ -39,13 +45,15 @@ public class Booking extends AppCompatActivity {
     FirebaseFirestore store;
 
     Appointment appointment;
-    Date date = new Date();
+    Calendar myCalendar = Calendar.getInstance();
     Spinner doctor;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.activity_booking, container, false);
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_booking);
 
         appointment = new Appointment(null, null, null);
 
@@ -53,8 +61,8 @@ public class Booking extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         store = FirebaseFirestore.getInstance();
 
-        doctor = findViewById(R.id.e_doctor);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        doctor = root.findViewById(R.id.e_doctor);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.doctors, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         doctor.setAdapter(adapter);
@@ -72,21 +80,18 @@ public class Booking extends AppCompatActivity {
 
 
         // Link components
-        proceed = findViewById(R.id.b_display);
-        gender = findViewById(R.id.radioGroup);
-        Button btn = findViewById(R.id.button2);
-        Button btn2 = findViewById(R.id.button3);
+        proceed = root.findViewById(R.id.b_display);
+        Button btn = root.findViewById(R.id.button2);
+        Button btn2 = root.findViewById(R.id.button3);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (datePicker, year, month, day) -> {
-            date.setYear(year);
-            date.setDate(day);
-            date.setMonth(month);
-        }, date.getYear(), date.getMonth(), date.getDay());
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (datePicker, year, month, day) -> {
+            myCalendar.set(year, month, day, myCalendar.get(Calendar.HOUR), myCalendar.get(Calendar.MINUTE));
+        }, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DATE));
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, (timePicker, hour, minute) -> {
-            date.setHours(hour);
-            date.setMinutes(minute);
-        }, date.getHours(), date.getMinutes(), false
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timePicker, hour, minute) -> {
+            myCalendar.set(myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DATE),
+                    hour, minute);
+        }, myCalendar.get(Calendar.HOUR), myCalendar.get(Calendar.MINUTE), true
         );
 
         btn.setOnClickListener((view) -> {
@@ -102,7 +107,9 @@ public class Booking extends AppCompatActivity {
             submitForm();
         });
 
+        return root;
     }
+
 
     protected void submitForm() {
 //        cur_user.setName(name.getText().toString());
@@ -118,8 +125,10 @@ public class Booking extends AppCompatActivity {
 //            return;
 //        }
 
+        addReminder();
+
         DateFormat format = DateFormat.getDateTimeInstance();
-        appointment.setDatentime(format.format(date));
+        appointment.setDatentime(format.format(myCalendar.getTime()));
 
         DocumentReference ref = store.collection("clientinfo")
                 .document(auth.getUid())
@@ -129,14 +138,27 @@ public class Booking extends AppCompatActivity {
 
         ref.set(appointment.getPacket()).addOnSuccessListener(
                 documentReference -> {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT);
                     toast.show();
                 }
-        ).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show());
-
-
+        ).addOnFailureListener(e -> Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show());
     }
 
+    public void addReminder() {
+        Calendar begin = Calendar.getInstance();
+        begin.set(2019, 0, 19, 7, 30);
+        Calendar end = Calendar.getInstance();
+        end.set(2019, 0, 19, 8, 30);
+
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, begin.getTimeInMillis())
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end.getTimeInMillis())
+                .putExtra(CalendarContract.Events.TITLE, "Appointment")
+                .putExtra(CalendarContract.Events.DESCRIPTION, appointment.getDoctor());
+
+        startActivity(intent);
+    }
 
 }
 

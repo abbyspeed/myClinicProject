@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.myclinic.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_navigation_home_to_appointments"
+            app:destination="@id/appointments"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.example.myclinic.ui.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/appointments"
+        android:name="com.example.myclinic.ui.appointments.Appointments"
+        android:label="Appointments"
+        tools:layout="@layout/fragment_appointments" >
+        <action
+            android:id="@+id/action_appointments_to_booking"
+            app:destination="@id/booking" />
+    </fragment>
+    <fragment
+        android:id="@+id/booking"
+        android:name="com.example.myclinic.Booking"
+        android:label="Booking"
+        tools:layout="@layout/activity_booking"/>
+    <activity
+        android:id="@+id/login"
+        android:name="com.example.myclinic.Login"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+
+</navigation>

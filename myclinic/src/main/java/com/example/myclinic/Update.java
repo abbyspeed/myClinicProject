@@ -35,7 +35,6 @@ import java.util.Date;
 
 public class Update extends AppCompatActivity {
     Button proceed;
-    RadioGroup gender;
 
     FirebaseAuth auth;
     FirebaseFirestore store;
@@ -81,7 +80,6 @@ public class Update extends AppCompatActivity {
 
         // Link components
         proceed = findViewById(R.id.b_display);
-        gender = findViewById(R.id.radioGroup);
         Button btn = findViewById(R.id.button2);
         Button btn2 = findViewById(R.id.button3);
 
@@ -110,24 +108,12 @@ public class Update extends AppCompatActivity {
 
         proceed.setOnClickListener((view) -> {
             submitForm();
+            finish();
         });
 
     }
 
     protected void submitForm() {
-//        cur_user.setName(name.getText().toString());
-//        cur_user.setAddress(address.getText().toString());
-//        cur_user.setPhoneno(address.getText().toString());
-//
-//        if (gender.getCheckedRadioButtonId() == R.id.male) {
-//            cur_user.setGender("male");
-//        } else if (gender.getCheckedRadioButtonId() == R.id.female) {
-//            cur_user.setGender("female");
-//        } else {
-//            Toast.makeText(this, "You have not selected any gender", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-
         DateFormat format = DateFormat.getDateTimeInstance();
         appointment.setDatentime(format.format(date));
 
