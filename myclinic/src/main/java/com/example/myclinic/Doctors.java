@@ -21,7 +21,7 @@ public class Doctors extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Doctors.this, Mainpage.class));
+//                startActivity(new Intent(Doctors.this, Mainpage.class));
             }
         });
     }

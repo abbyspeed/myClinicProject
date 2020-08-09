@@ -5,7 +5,9 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,7 +19,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,7 +35,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Booking extends AppCompatActivity {
+public class Booking extends Fragment {
     Button proceed;
     RadioGroup gender;
 
@@ -42,10 +46,12 @@ public class Booking extends AppCompatActivity {
     Date date = new Date();
     Spinner doctor;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.activity_booking, container, false);
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_booking);
 
         appointment = new Appointment(null, null, null);
 
@@ -53,8 +59,8 @@ public class Booking extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         store = FirebaseFirestore.getInstance();
 
-        doctor = findViewById(R.id.e_doctor);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        doctor = root.findViewById(R.id.e_doctor);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.doctors, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         doctor.setAdapter(adapter);
@@ -72,18 +78,17 @@ public class Booking extends AppCompatActivity {
 
 
         // Link components
-        proceed = findViewById(R.id.b_display);
-        gender = findViewById(R.id.radioGroup);
-        Button btn = findViewById(R.id.button2);
-        Button btn2 = findViewById(R.id.button3);
+        proceed = root.findViewById(R.id.b_display);
+        Button btn = root.findViewById(R.id.button2);
+        Button btn2 = root.findViewById(R.id.button3);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (datePicker, year, month, day) -> {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (datePicker, year, month, day) -> {
             date.setYear(year);
             date.setDate(day);
             date.setMonth(month);
         }, date.getYear(), date.getMonth(), date.getDay());
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, (timePicker, hour, minute) -> {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timePicker, hour, minute) -> {
             date.setHours(hour);
             date.setMinutes(minute);
         }, date.getHours(), date.getMinutes(), false
@@ -102,7 +107,9 @@ public class Booking extends AppCompatActivity {
             submitForm();
         });
 
+        return root;
     }
+
 
     protected void submitForm() {
 //        cur_user.setName(name.getText().toString());
@@ -129,10 +136,10 @@ public class Booking extends AppCompatActivity {
 
         ref.set(appointment.getPacket()).addOnSuccessListener(
                 documentReference -> {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT);
                     toast.show();
                 }
-        ).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show());
+        ).addOnFailureListener(e -> Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show());
 
 
     }
