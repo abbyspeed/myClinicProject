@@ -17,8 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+//import com.google.firebase.database.DatabaseReference;
+//import com.google.firebase.database.FirebaseDatabase;
 
 public class Registration extends AppCompatActivity {
     private EditText userName, userEmail, userPassword, userPhone;
@@ -26,6 +26,7 @@ public class Registration extends AppCompatActivity {
     private TextView userLogin;
     private FirebaseAuth firebaseAuth;
     String email, phone, password, name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,28 +42,25 @@ public class Registration extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(Registration.this,Login.class));
+                startActivity(new Intent(Registration.this, Login.class));
 
-                if(validate())
-                {
+                if (validate()) {
                     //Upload data to the database
                     String user_email = userEmail.getText().toString().trim();
                     String user_password = userPassword.getText().toString().trim();
 
-                    firebaseAuth.createUserWithEmailAndPassword(user_email,user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if(task.isSuccessful()) {
+                            if (task.isSuccessful()) {
                                 //sendEMailVerification
                                 sendUserData();
                                 firebaseAuth.signOut();
                                 Toast.makeText(Registration.this, "Successfully Registered, Upload complete!", Toast.LENGTH_SHORT).show();
                                 finish();
                                 startActivity(new Intent(Registration.this, Login.class));
-                            }
-                            else
-                            {
+                            } else {
                                 Toast.makeText(Registration.this, "Register Failed!", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -77,22 +75,21 @@ public class Registration extends AppCompatActivity {
         userLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Registration.this,Login.class));
+                startActivity(new Intent(Registration.this, Login.class));
             }
         });
     }
 
     private void setupUIviews() {
-        userName = (EditText) findViewById(R.id.etUsername);
-        userEmail = (EditText) findViewById(R.id.etUserEmail);
-        userPassword = (EditText) findViewById(R.id.etUserPassword);
-        regButton = (Button) findViewById(R.id.btnRegister);
-        userLogin= (TextView)findViewById(R.id.tvUserLogin);
-        userPhone = (EditText)findViewById(R.id.etUserPhone);
+        userName = findViewById(R.id.etUsername);
+        userEmail = findViewById(R.id.etUserEmail);
+        userPassword = findViewById(R.id.etUserPassword);
+        regButton = findViewById(R.id.btnRegister);
+        userLogin = findViewById(R.id.tvUserLogin);
+        userPhone = findViewById(R.id.etUserPhone);
     }
 
-    private Boolean validate()
-    {
+    private Boolean validate() {
         Boolean result = false;
 
         name = userName.getText().toString();
@@ -100,18 +97,16 @@ public class Registration extends AppCompatActivity {
         password = userPassword.getText().toString();
         phone = userPhone.getText().toString();
 
-        if(name.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty())
-        {
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty()) {
             Toast.makeText(this, "Please Enter All The Details", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
+        } else {
             result = true;
         }
 
         return result;
 
     }
+
     private void sendEmailVerification() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
@@ -132,11 +127,11 @@ public class Registration extends AppCompatActivity {
         }
     }
 
-    private void sendUserData(){
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
-        userprofile userprofile = new userprofile(phone, email, name);
-        myRef.setValue(userprofile);
+    private void sendUserData() {
+//        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
+//        userprofile userprofile = new userprofile(phone, email, name);
+//        myRef.setValue(userprofile);
     }
 }
 

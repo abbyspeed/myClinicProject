@@ -7,6 +7,17 @@
     android:layout_height="match_parent">
 
     <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:text="Set time"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/e_doctor"
+        app:layout_constraintTop_toBottomOf="@+id/e_doctor"
+        app:layout_constraintVertical_bias="0.222" />
+
+    <Button
         android:id="@+id/b_display"
         android:layout_width="120dp"
         android:layout_height="43dp"
@@ -163,7 +174,6 @@
             android:id="@+id/male"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="checkButton"
             android:text="Male"
             android:textColor="#166088" />
 
@@ -171,7 +181,6 @@
             android:id="@+id/female"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="checkButton"
             android:text="Female"
             android:textColor="#166088" />
     </RadioGroup>
@@ -190,41 +199,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.62" />
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set the date"
-        android:textColor="#166088"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.129"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.739" />
-
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pick the time"
-        android:textColor="#166088"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.747"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.739" />
-
     <EditText
         android:id="@+id/e_name"
         android:layout_width="259dp"
         android:layout_height="36dp"
         android:ems="10"
+        android:hint="Enter your name"
         android:inputType="textPersonName"
-        android:text="Enter your name"
         android:textColor="#C6C0C0"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -239,8 +220,8 @@
         android:layout_width="259dp"
         android:layout_height="38dp"
         android:ems="10"
+        android:hint="Enter your identification card no"
         android:inputType="textPersonName"
-        android:text="Enter your identification card no"
         android:textColor="#C6C0C0"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -256,6 +237,7 @@
         android:layout_height="36dp"
         android:ems="10"
         android:gravity="top|left"
+        android:hint="Enter your address"
         android:inputType="textMultiLine"
         android:lines="2"
         android:maxLines="3"
@@ -287,33 +269,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.472" />
 
-    <EditText
-        android:id="@+id/e_date"
-        android:layout_width="126dp"
-        android:layout_height="38dp"
-        android:ems="10"
-        android:inputType="date"
-        android:text="dd/mm/yy"
-        android:textColor="#C6C0C0"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.136"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.803" />
-
-    <Spinner
-        android:id="@+id/e_time"
-        android:layout_width="115dp"
-        android:layout_height="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.82"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.801" />
-
     <Spinner
         android:id="@+id/e_doctor"
         android:layout_width="168dp"
@@ -324,5 +279,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.638" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="200dp"
+        android:text="Set Date"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/e_doctor"
+        app:layout_constraintTop_toBottomOf="@+id/e_doctor"
+        app:layout_constraintVertical_bias="0.222" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

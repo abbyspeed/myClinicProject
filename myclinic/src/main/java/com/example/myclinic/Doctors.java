@@ -16,7 +16,7 @@ public class Doctors extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctors);
 
-        back=(Button)findViewById(R.id.back2home3);
+        back= findViewById(R.id.back2home3);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
