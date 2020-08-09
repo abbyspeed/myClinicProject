@@ -29,6 +29,7 @@ import com.google.firebase.firestore.Query;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Appointments extends Fragment {
@@ -109,8 +110,9 @@ public class Appointments extends Fragment {
                     DateFormat format = DateFormat.getDateTimeInstance();
                     try {
                         Date date = format.parse(model.getDatentime());
-                        holder.getDateView().setText(date.getDate() + " " + date.getMonth() + " " + date.getYear());
-                        holder.getTimeView().setText(date.getHours() + " " + date.getMinutes());
+
+                        holder.getDateView().setText(DateFormat.getDateInstance().format(date));
+                        holder.getTimeView().setText(DateFormat.getTimeInstance().format(date));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
