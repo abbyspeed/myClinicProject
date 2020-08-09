@@ -81,12 +81,12 @@ public class Registration extends AppCompatActivity {
     }
 
     private void setupUIviews() {
-        userName = (EditText) findViewById(R.id.etUsername);
-        userEmail = (EditText) findViewById(R.id.etUserEmail);
-        userPassword = (EditText) findViewById(R.id.etUserPassword);
-        regButton = (Button) findViewById(R.id.btnRegister);
-        userLogin = (TextView) findViewById(R.id.tvUserLogin);
-        userPhone = (EditText) findViewById(R.id.etUserPhone);
+        userName = findViewById(R.id.etUsername);
+        userEmail = findViewById(R.id.etUserEmail);
+        userPassword = findViewById(R.id.etUserPassword);
+        regButton = findViewById(R.id.btnRegister);
+        userLogin = findViewById(R.id.tvUserLogin);
+        userPhone = findViewById(R.id.etUserPhone);
     }
 
     private Boolean validate() {

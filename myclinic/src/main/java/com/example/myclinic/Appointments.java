@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,7 +24,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Appointments extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -49,7 +54,11 @@ public class Appointments extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        cAdapter.stopListening();
+
+        if (cAdapter != null) {
+            cAdapter.stopListening();
+        }
+
     }
 
     @Override
@@ -69,25 +78,53 @@ public class Appointments extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         Query query = db.collection("clientinfo")
-                .whereEqualTo("uid", auth.getCurrentUser().getUid());
+                .document(auth.getUid())
+                .collection("appointments");
 
-
-        FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
-                .setQuery(query, User.class)
+        FirestoreRecyclerOptions<Appointment> options = new FirestoreRecyclerOptions.Builder<Appointment>()
+                .setQuery(query, Appointment.class)
                 .build();
 
-        FirestoreRecyclerAdapter<User, Adapter.ViewHolder> cAdapter = new FirestoreRecyclerAdapter<User, Adapter.ViewHolder>(options) {
+        FirestoreRecyclerAdapter<Appointment, Adapter.ViewHolder> cAdapter = new FirestoreRecyclerAdapter<Appointment, Adapter.ViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull Adapter.ViewHolder holder, int position, @NonNull User model) {
-                Log.w("Adapter", "Loggin2");
-                holder.textview.setText(model.packet.get("name").toString());
+            protected void onBindViewHolder(@NonNull Adapter.ViewHolder holder, int position, @NonNull Appointment model) {
+                holder.getDeleteBtn().setOnClickListener((view -> {
+                    db.collection("clientinfo")
+                            .document(auth.getUid())
+                            .collection("appointments")
+                            .document(model.getUid())
+                            .delete();
+                }));
+
+                holder.getUpdateBtn().setOnClickListener((view -> {
+                    Intent intent = new Intent(Appointments.this, Update.class);
+                    intent.putExtra("UID", model.getUid());
+                    startActivity(intent);
+                }));
+
+
+                if (model.getDoctor() != null || model.getDatentime() != null) {
+                    Log.w("DATE", model.getPacket().keySet().toString());
+                    holder.getDoctorView().setText(model.getDoctor());
+
+                    DateFormat format = DateFormat.getDateTimeInstance();
+                    try {
+                        Date date = format.parse(model.getDatentime());
+                        holder.getDateView().setText(date.getDate() + " " + date.getMonth() + " " + date.getYear());
+                        holder.getTimeView().setText(date.getHours() + " " + date.getMinutes());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
             }
 
             @NonNull
             @Override
             public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 Log.w("Adapter", "Loggin1");
-                TextView v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.dbox, parent, false);
+                ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.dbox, parent, false);
 
                 Adapter.ViewHolder vh = new Adapter.ViewHolder(v);
 

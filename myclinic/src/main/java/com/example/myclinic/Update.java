@@ -3,6 +3,7 @@ package com.example.myclinic;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,7 +33,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Booking extends AppCompatActivity {
+public class Update extends AppCompatActivity {
     Button proceed;
     RadioGroup gender;
 
@@ -47,7 +49,13 @@ public class Booking extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
 
-        appointment = new Appointment(null, null, null);
+        TextView header = findViewById(R.id.head_b);
+        header.setText("Appointment Update");
+
+        Intent intent = getIntent();
+        String uid = intent.getStringExtra("UID");
+
+        appointment = new Appointment(uid, null, null);
 
         // Initialized Firebase package
         auth = FirebaseAuth.getInstance();
@@ -76,6 +84,8 @@ public class Booking extends AppCompatActivity {
         gender = findViewById(R.id.radioGroup);
         Button btn = findViewById(R.id.button2);
         Button btn2 = findViewById(R.id.button3);
+
+        proceed.setText("AMEND");
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, (datePicker, year, month, day) -> {
             date.setYear(year);
@@ -123,9 +133,8 @@ public class Booking extends AppCompatActivity {
 
         DocumentReference ref = store.collection("clientinfo")
                 .document(auth.getUid())
-                .collection("appointments").document();
+                .collection("appointments").document(appointment.getUid());
 
-        appointment.setUid(ref.getId());
 
         ref.set(appointment.getPacket()).addOnSuccessListener(
                 documentReference -> {

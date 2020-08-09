@@ -9,11 +9,15 @@ public class User {
     public User() {
     }
 
-    public User(String uid, String userPhone, String userName, String userAddress) {
+    public User(String uid, String userPhone, String userName,
+                String userAddress, String userGender,
+                String userIcno) {
         packet.put("uid", uid);
         packet.put("name", userName);
         packet.put("phoneno", userPhone);
         packet.put("address", userAddress);
+        packet.put("gender", userGender);
+        packet.put("icno", userIcno);
     }
 
     public User(Map<String, Object> packet) {
@@ -50,6 +54,14 @@ public class User {
 
     public void setAddress(String address) {
         packet.put("address", address);
+    }
+
+    public void setGender(String gender) {
+        packet.put("gender", gender);
+    }
+
+    public void setIcno(String icno) {
+        packet.put("icno", icno);
     }
 
 }

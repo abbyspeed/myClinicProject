@@ -43,11 +43,11 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Name = (EditText) findViewById(R.id.editText3);
-        Password = (EditText) findViewById(R.id.editText4);
-        btn = (Button) findViewById(R.id.button);
-        userRegistration = (TextView) findViewById(R.id.register);
-        Passforgot = (TextView) findViewById(R.id.forgotpass);
+        Name = findViewById(R.id.editText3);
+        Password = findViewById(R.id.editText4);
+        btn = findViewById(R.id.button);
+        userRegistration = findViewById(R.id.register);
+        Passforgot = findViewById(R.id.forgotpass);
 
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
@@ -103,7 +103,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void checkEmailVerification() {
-        FirebaseUser firebaseUser = firebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Boolean emailflag = firebaseUser.isEmailVerified();
     }
 
