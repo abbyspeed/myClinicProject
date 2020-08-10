@@ -55,13 +55,13 @@ public class Registration extends AppCompatActivity {
 
                             if (task.isSuccessful()) {
                                 //sendEMailVerification
-                                sendUserData();
+                                //sendUserData();
                                 firebaseAuth.signOut();
                                 Toast.makeText(Registration.this, "Successfully Registered, Upload complete!", Toast.LENGTH_SHORT).show();
                                 finish();
                                 startActivity(new Intent(Registration.this, Login.class));
                             } else {
-                                Toast.makeText(Registration.this, "Register Failed!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Registration.this, "Register Failed!" + task.getException(), Toast.LENGTH_LONG).show();
                             }
                         }
 
@@ -114,7 +114,7 @@ public class Registration extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        sendUserData();
+//                        sendUserData();
                         Toast.makeText(Registration.this, "Successfully Registered, Verification mail sent!", Toast.LENGTH_SHORT).show();
                         firebaseAuth.signOut();
                         finish();
