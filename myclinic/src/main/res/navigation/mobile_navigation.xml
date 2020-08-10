@@ -17,6 +17,10 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_dashboard"
             app:destination="@id/navigation_dashboard" />
+        <action
+            android:id="@+id/action_navigation_home_to_doctors"
+            app:destination="@id/doctors"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -29,7 +33,7 @@
         android:id="@+id/appointments"
         android:name="com.example.myclinic.ui.appointments.Appointments"
         android:label="Appointments"
-        tools:layout="@layout/fragment_appointments" >
+        tools:layout="@layout/fragment_appointments">
         <action
             android:id="@+id/action_appointments_to_booking"
             app:destination="@id/booking" />
@@ -38,11 +42,16 @@
         android:id="@+id/booking"
         android:name="com.example.myclinic.Booking"
         android:label="Booking"
-        tools:layout="@layout/activity_booking"/>
+        tools:layout="@layout/activity_booking" />
     <activity
         android:id="@+id/login"
         android:name="com.example.myclinic.Login"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/doctors"
+        android:name="com.example.myclinic.Doctors"
+        android:label="Doctors"
+        tools:layout="@layout/activity_doctors" />
 
 </navigation>
