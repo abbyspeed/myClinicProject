@@ -25,6 +25,7 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
         Button appointBtn = root.findViewById(R.id.b_appoint);
+        Button doctorBtn = root.findViewById(R.id.b_doctors);
         TextView name = root.findViewById(R.id.user);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -44,6 +45,11 @@ public class HomeFragment extends Fragment {
             Navigation.findNavController(view).navigate(action);
         });
 
+        doctorBtn.setOnClickListener((view) -> {
+            NavDirections action = HomeFragmentDirections.actionNavigationHomeToDoctors();
+
+            Navigation.findNavController(view).navigate(action);
+        });
 
         return root;
     }

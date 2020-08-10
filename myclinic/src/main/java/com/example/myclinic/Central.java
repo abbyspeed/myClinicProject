@@ -17,8 +17,6 @@ public class Central extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.w("ABC", String.valueOf(item.getItemId()));
-
         Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navigation_home);
 
         return true;
