@@ -17,6 +17,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 //import com.google.firebase.database.DatabaseReference;
 //import com.google.firebase.database.FirebaseDatabase;
 
@@ -33,42 +37,50 @@ public class Registration extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
 
         //INITIALIZE CLOUD FIRESTORE
-
         setupUIviews();
 
         firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore store = FirebaseFirestore.getInstance();
 
-        regButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        regButton.setOnClickListener(v -> {
+            startActivity(new Intent(Registration.this, Login.class));
 
-                startActivity(new Intent(Registration.this, Login.class));
+            if (validate()) {
+                //Upload data to the database
+                String user_email = userEmail.getText().toString().trim();
+                String user_password = userPassword.getText().toString().trim();
 
-                if (validate()) {
-                    //Upload data to the database
-                    String user_email = userEmail.getText().toString().trim();
-                    String user_password = userPassword.getText().toString().trim();
+                firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                    firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            //sendEMailVerification
+                            //sendUserData();
 
-                            if (task.isSuccessful()) {
-                                //sendEMailVerification
-                                //sendUserData();
-                                firebaseAuth.signOut();
-                                Toast.makeText(Registration.this, "Successfully Registered, Upload complete!", Toast.LENGTH_SHORT).show();
-                                finish();
-                                startActivity(new Intent(Registration.this, Login.class));
-                            } else {
-                                Toast.makeText(Registration.this, "Register Failed!" + task.getException(), Toast.LENGTH_LONG).show();
-                            }
+                            Map<String, Object> params = new HashMap<String, Object>();
+
+                            params.put("name", userName.getText().toString());
+                            params.put("phoneno", userPhone.getText().toString());
+
+                            store.collection("clientinfo").document(firebaseAuth.getUid())
+                                    .set(params)
+                                    .addOnCompleteListener(task1 -> {
+                                        firebaseAuth.signOut();
+                                        Toast.makeText(Registration.this, "Successfully Registered, Upload complete!", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                        startActivity(new Intent(Registration.this, Login.class));
+                                    });
+
+
+                        } else {
+                            Toast.makeText(Registration.this, "Register Failed!" + task.getException(), Toast.LENGTH_LONG).show();
                         }
+                    }
 
-                    });
+                });
 
 
-                }
             }
         });
 

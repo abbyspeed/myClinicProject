@@ -16,6 +16,8 @@ import com.example.myclinic.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
+
 public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -29,7 +31,12 @@ public class HomeFragment extends Fragment {
         FirebaseFirestore store = FirebaseFirestore.getInstance();
         store.collection("clientinfo").document(auth.getUid())
                 .addSnapshotListener((value, error) -> {
-                    name.setText(value.get("name").toString());
+                    if (value.get("name") == null) {
+                        name.setText("Default");
+                    } else {
+                        name.setText(value.get("name").toString());
+                    }
+
                 });
 
         appointBtn.setOnClickListener((view) -> {

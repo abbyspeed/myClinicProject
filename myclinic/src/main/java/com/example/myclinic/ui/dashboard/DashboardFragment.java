@@ -22,6 +22,8 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.Objects;
+
 public class DashboardFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -38,10 +40,31 @@ public class DashboardFragment extends Fragment {
         FirebaseFirestore store = FirebaseFirestore.getInstance();
 
         store.collection("clientinfo").document(auth.getUid()).addSnapshotListener((value, error) -> {
-            name.setText(value.get("name").toString());
-            icno.setText(value.get("icno").toString());
-            addr.setText(value.get("address").toString());
-            phoneno.setText(value.get("phoneno").toString());
+            Object cName = value.get("name");
+            Object cIcno = value.get("icno");
+            Object cAddress = value.get("address");
+            Object cPhoneno = value.get("phoneno");
+
+            if (cName == null) {
+                cName = new String("default");
+            }
+
+            if (cIcno == null) {
+                cIcno = new String("default");
+            }
+
+            if (cAddress == null) {
+                cAddress = new String("default");
+            }
+
+            if (cPhoneno == null) {
+                cPhoneno = new String("default");
+            }
+
+            name.setText(cName.toString());
+            icno.setText(cIcno.toString());
+            addr.setText(cAddress.toString());
+            phoneno.setText(cPhoneno.toString());
         });
 
         Button logoutBtn = root.findViewById(R.id.logout);

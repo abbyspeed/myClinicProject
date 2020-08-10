@@ -92,6 +92,7 @@ public class Login extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     progressDialog.dismiss();
                     checkEmailVerification();
+                    finish();
                     Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Login.this, Central.class));
 
